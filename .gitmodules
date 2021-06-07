@@ -1,0 +1,3 @@
+[submodule "nativeextractor"]
+	path = nativeextractor
+	url = https://github.com/SpongeData-cz/nativeextractor.git
