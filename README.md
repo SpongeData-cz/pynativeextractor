@@ -1,7 +1,7 @@
 # NativeExtractor module for Python
 This is official Python binding for the (NativeExtractor)[https://github.com/SpongeData-cz/nativeextractor] project.
 
-![NativeExtractor Logo](./logo.png)
+<p align="center"><img src="https://raw.githubusercontent.com/SpongeData-cz/nativeextractor/main/logo.svg" width="400" /></p>
 
 ![Python Logo](logo_python.png)
 
