@@ -1,5 +1,5 @@
 # NativeExtractor module for Python
-This is official Python binding for the (NativeExtractor)[https://github.com/SpongeData-cz/nativeextractor] project.
+This is official Python binding for the [NativeExtractor](https://github.com/SpongeData-cz/nativeextractor) project.
 
 <p align="center"><img src="https://raw.githubusercontent.com/SpongeData-cz/nativeextractor/main/logo.svg" width="400" /></p>
 
