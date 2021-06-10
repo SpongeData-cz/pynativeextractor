@@ -1,10 +1,8 @@
 # NativeExtractor module for Python
-This is official Python binding for the (NativeExtractor)[https://github.com/SpongeData-cz/nativeextractor] project.
+This is official Python binding for the [NativeExtractor](https://github.com/SpongeData-cz/nativeextractor) project.
 
 <p align="center"><img src="https://raw.githubusercontent.com/SpongeData-cz/nativeextractor/main/logo.svg" width="400" /></p>
-
-![Python Logo](logo_python.png)
-
+<p align="center"><img src="https://raw.githubusercontent.com/SpongeData-cz/nativeextractor/main/logo_python.png" width="400" /></p>
 
 # Installation
 ## Requirements
