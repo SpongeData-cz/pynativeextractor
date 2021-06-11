@@ -23,7 +23,6 @@ source myproject/bin/activate
 ```
 
 ## Instant PyPi solution
-**TODO:**
 ```pip install pynativeextractor```
 
 ## Manual
