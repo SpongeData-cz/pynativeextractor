@@ -13,7 +13,7 @@ else:
 
 kwargs = {
     "name": "pynativeextractor",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "author": "SpongeData s.r.o.",
     "author_email": "info@spongedata.cz",
     "description": "Python binding for nativeextractor",
