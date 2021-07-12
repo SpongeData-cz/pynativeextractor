@@ -102,22 +102,24 @@ class Extractor (object):
             bool: True on success
         """
         ret = None
+
+        so_dir_enc = so_dir
+        symb_enc = symb
+        param_enc = param
+
         if sys.version_info < (3, 0):
-            ret = ne.add_miner_so(
-                self._extractor,
-                so_dir.encode('utf-8'),
-                symb.encode('utf-8'),
-                param.encode('utf-8')
-            )
-        else:
-            ret = ne.add_miner_so(
-                self._extractor,
-                so_dir,
-                symb,
-                param
-            )
+            so_dir_enc = so_dir.encode('utf-8')
+            symb_enc = symb.encode('utf-8')
+            param_enc = param.encode('utf-8')
+
+        miner_tuple = (so_dir_enc, symb_enc, param_enc)
+
+        ret = ne.add_miner_so(
+            self._extractor,
+            *miner_tuple)
+
         if ret:
-            self.miners += [(so_dir, symb, param)]
+            self.miners += [miner_tuple]
         return ret
 
     def set_stream(self, stream):

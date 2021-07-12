@@ -175,6 +175,8 @@ static PyObject *add_miner_so(PyObject *self, PyObject *args) {
     return NULL;
   }
 
+//  params =
+
   if (extractor->add_miner_so(extractor, so_dir, symb, params)) {
     Py_RETURN_TRUE;
   }
