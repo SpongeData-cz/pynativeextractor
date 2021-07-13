@@ -144,9 +144,11 @@ static PyObject *next(PyObject *self, PyObject *args) {
     str[len] = '\0';
 
     PyObject *occurrence = Py_BuildValue(
-      "{slslsssfss}",
+      "{slslslslsssfss}",
       "pos", (*pres)->pos,
       "len", (*pres)->len,
+      "upos", (*pres)->upos,
+      "ulen", (*pres)->ulen,
       "label", (*pres)->label,
       "prob", (*pres)->prob,
       "value", str
