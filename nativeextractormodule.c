@@ -6,6 +6,7 @@
  */
 
 #include <Python.h>
+#include <string.h>
 #include <nativeextractor/extractor.h>
 #include <nativeextractor/miner.h>
 #include <nativeextractor/occurrence.h>
@@ -68,14 +69,16 @@ static PyObject *free_buffer_stream(PyObject *self, PyObject *args) {
 
 static PyObject *stream_buffer_new(PyObject *self, PyObject *args) {
   const char *buffer;
+  int buflen;
 
-  if (!PyArg_ParseTuple(args, "s", &buffer)) {
+  if (!PyArg_ParseTuple(args, "s#", &buffer, &buflen)) {
     return NULL;
   }
 
-  char * buffer_mem = strdup(buffer);
+  char * buffer_mem = malloc(buflen);
+  memcpy(buffer_mem, buffer, buflen);
 
-  stream_buffer_c *sb = stream_buffer_c_new(buffer_mem, strlen(buffer_mem)+1);
+  stream_buffer_c *sb = stream_buffer_c_new(buffer_mem, buflen);
   if (sb->stream.state_flags & STREAM_FAILED) {
     DESTROY(sb);
     PyErr_SetString(PyExc_IOError, "Stream failed");
