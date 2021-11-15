@@ -12,8 +12,9 @@ else:
         long_description = fh.read().decode("utf-8")
 
 kwargs = {
+    "setup_requires": ['wheel'], # for future releases to support wheel by default
     "name": "pynativeextractor",
-    "version": "1.0.7",
+    "version": "1.0.8",
     "author": "SpongeData s.r.o.",
     "author_email": "info@spongedata.cz",
     "description": "Python binding for nativeextractor",
