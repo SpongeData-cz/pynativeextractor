@@ -262,6 +262,34 @@ static PyObject *dlsymbols(PyObject *self, PyObject *args) {
   return list;
 }
 
+static PyObject *set_flags(PyObject *self, PyObject *args) {
+  extractor_c *extractor;
+  unsigned flags;
+
+  if (!PyArg_ParseTuple(args, "lI", &extractor, &flags)) {
+    return NULL;
+  }
+
+  extractor->set_flags(extractor, flags);
+
+  return Py_BuildValue("l", extractor->flags);
+}
+
+
+static PyObject *unset_flags(PyObject *self, PyObject *args) {
+  extractor_c *extractor;
+  unsigned flags;
+
+  if (!PyArg_ParseTuple(args, "lI", &extractor, &flags)) {
+    return NULL;
+  }
+
+  extractor->unset_flags(extractor, flags);
+
+  return Py_BuildValue("l", extractor->flags);
+}
+
+
 static PyMethodDef nativeextractor_methods[] = {
   {
     "stream_file_new",
@@ -346,6 +374,18 @@ static PyMethodDef nativeextractor_methods[] = {
     dlsymbols,
     METH_VARARGS,
     "dlsymbols( extractor ): Returns a list of dicts with dlsymbols."
+  },
+  {
+    "set_flags",
+    set_flags,
+    METH_VARARGS,
+    "set_flags( extractor, flags ): Sets flags for extractor. Returns new flags."
+  },
+  {
+    "unset_flags",
+    unset_flags,
+    METH_VARARGS,
+    "unset_flags( extractor, flags ): Unsets flags for extractor. Returns new flags."
   },
   {
     NULL

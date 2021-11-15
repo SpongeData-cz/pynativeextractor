@@ -64,7 +64,13 @@ class BufferStream(Stream):
 
 class Extractor (object):
 
-    def __init__(self, miners=[], batch=1000, threads=1):
+    ## Flags
+    # Sort returned occurrences by position and length.
+    SORT_RESULTS = (1<<0)
+    # Do not return enclosed occurrences.
+    NO_ENCLOSED_OCCURRENCES = (1<<1)
+
+    def __init__(self, miners=[], batch=1000, threads=1, flags=0):
         """Initializes an extractor.
 
         Args:
@@ -76,6 +82,7 @@ class Extractor (object):
         self.miners = []
         self.batch = batch
         self.stream = None
+        self.flags = 0
         self._extractor = ne.create_extractor(threads)
         for miner in miners:
             if not self.add_miner_so(*miner):
@@ -86,6 +93,7 @@ class Extractor (object):
                     miner[2] if len(miner) > 2 else "",
                     self.get_last_error()
                 )
+        self.set_flags(flags) # sets self.flags
 
     def __del__(self):
         ne.free_extractor(self._extractor)
@@ -131,6 +139,12 @@ class Extractor (object):
         ne.unset_stream(self._extractor)
         self.stream = None
         return self
+
+    def set_flags(self, flags):
+        self.flags = ne.set_flags(self._extractor, flags)
+
+    def unset_flags(self, flags):
+        self.flags = ne.unset_flags(self._extractor, flags)
 
     def get_last_error(self):
         return ne.get_last_error(self._extractor)
