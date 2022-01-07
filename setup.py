@@ -14,7 +14,7 @@ else:
 kwargs = {
     "setup_requires": ['wheel'], # for future releases to support wheel by default
     "name": "pynativeextractor",
-    "version": "1.0.8",
+    "version": "1.0.9",
     "author": "SpongeData s.r.o.",
     "author_email": "info@spongedata.cz",
     "description": "Python binding for nativeextractor",
