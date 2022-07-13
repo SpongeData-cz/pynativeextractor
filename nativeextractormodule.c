@@ -5,6 +5,8 @@
  * https://opensource.org/licenses/MIT
  */
 
+// Define Python 3.10+ macro
+#define PY_SSIZE_T_CLEAN
 #include <Python.h>
 #include <string.h>
 #include <nativeextractor/extractor.h>
@@ -69,7 +71,7 @@ static PyObject *free_buffer_stream(PyObject *self, PyObject *args) {
 
 static PyObject *stream_buffer_new(PyObject *self, PyObject *args) {
   const char *buffer;
-  int buflen;
+  Py_ssize_t buflen;
 
   if (!PyArg_ParseTuple(args, "s#", &buffer, &buflen)) {
     return NULL;

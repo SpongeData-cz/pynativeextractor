@@ -1,6 +1,7 @@
 import glob, setuptools
 import sys
-from distutils.core import setup, Extension
+from distutils.core import Extension
+from setuptools import setup
 import subprocess
 import re
 
@@ -26,7 +27,7 @@ def get_git_version():
 kwargs = {
     "setup_requires": ['wheel'], # for future releases to support wheel by default
     "name": "pynativeextractor",
-    "version": get_git_version(),
+    "version": "10.0.12", #get_git_version(), - unable to install if you use
     "author": "SpongeData s.r.o.",
     "author_email": "info@spongedata.cz",
     "description": "Python binding for nativeextractor",
@@ -59,6 +60,9 @@ kwargs = {
     ],
     "packages": setuptools.find_packages(),
     "python_requires":">=2.7",
+    "install_requires": [
+        "wheel",
+    ],
 }
 
 setup(**kwargs)
