@@ -27,7 +27,7 @@ def get_git_version():
 kwargs = {
     "setup_requires": ['wheel'], # for future releases to support wheel by default
     "name": "pynativeextractor",
-    "version": "10.0.13", #get_git_version(), - unable to install if you use
+    "version": "1.0.13", #get_git_version(), - unable to install if you use
     "author": "SpongeData s.r.o.",
     "author_email": "info@spongedata.cz",
     "description": "Python binding for nativeextractor",
