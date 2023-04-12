@@ -14,20 +14,10 @@ else:
     with open("README.md", "r") as fh:
         long_description = fh.read().decode("utf-8")
 
-def get_git_version():
-    tag = subprocess.check_output([ "git", "describe", "--tags", "--abbrev=0", ])
-    if sys.version_info >= (3, 0):
-        tag = tag.decode("utf-8")
-    found = re.search(r"v(?P<tag>\d+.\d+.\d+)", tag)
-    if found is None:
-        raise Exception("No tag in git!")
-    found = found.groupdict()
-    return found["tag"]
-
 kwargs = {
     "setup_requires": ['wheel'], # for future releases to support wheel by default
     "name": "pynativeextractor",
-    "version": "1.0.13", #get_git_version(), - unable to install if you use
+    "version": "1.0.14",
     "author": "SpongeData s.r.o.",
     "author_email": "info@spongedata.cz",
     "description": "Python binding for nativeextractor",
