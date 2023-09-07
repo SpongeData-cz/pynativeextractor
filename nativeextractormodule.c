@@ -12,6 +12,7 @@
 #include <nativeextractor/extractor.h>
 #include <nativeextractor/miner.h>
 #include <nativeextractor/occurrence.h>
+#include <nativeextractor/patricia.h>
 
 static PyObject *stream_file_new(PyObject *self, PyObject *args) {
   const char *fullpath;
@@ -291,6 +292,135 @@ static PyObject *unset_flags(PyObject *self, PyObject *args) {
   return Py_BuildValue("l", extractor->flags);
 }
 
+/********************************** PATRICIA **********************************/
+
+static PyObject *create_patricia(PyObject *self, PyObject *args) {
+  stream_c *stream;
+
+  if (!PyArg_ParseTuple(args, "l", &stream)) {
+    return NULL;
+  }
+
+  patricia_c *patricia = patricia_c_create(stream);
+
+  return Py_BuildValue("l", patricia);
+}
+
+static PyObject *create_patricia_from_stream(PyObject *self, PyObject *args) {
+  stream_c *stream;
+
+  if (!PyArg_ParseTuple(args, "l", &stream)) {
+    return NULL;
+  }
+
+  patricia_c *patricia = patricia_c_create_from_stream(stream);
+
+  return Py_BuildValue("l", patricia);
+}
+
+static PyObject *create_patricia_from_file(PyObject *self, PyObject *args) {
+  const char *fullpath;
+
+  if (!PyArg_ParseTuple(args, "s", &fullpath)) {
+    return NULL;
+  }
+
+  patricia_c *patricia = patricia_c_from_file(fullpath);
+
+  return Py_BuildValue("l", patricia);
+}
+
+static PyObject *free_patricia(PyObject *self, PyObject *args) {
+  patricia_c *patricia;
+
+  if (!PyArg_ParseTuple(args, "l", &patricia)) {
+    return NULL;
+  }
+
+  DESTROY(patricia);
+
+  Py_RETURN_NONE;
+}
+
+static PyObject *insert_patricia(PyObject *self, PyObject *args) {
+  patricia_c *patricia;
+  char *str;
+
+  if (!PyArg_ParseTuple(args, "ls", &patricia, &str)) {
+    return NULL;
+  }
+
+  patricia->insert(patricia, str, 0, strlen(str));
+
+  Py_RETURN_NONE;
+}
+
+static PyObject *search_patricia(PyObject *self, PyObject *args) {
+  patricia_c *patricia;
+  char *str;
+
+  if (!PyArg_ParseTuple(args, "ls", &patricia, &str)) {
+    return NULL;
+  }
+
+  uint32_t ret = patricia->search(patricia, str, strlen(str));
+
+  return Py_BuildValue("l", ret);
+}
+
+static PyObject *search_ext_patricia(PyObject *self, PyObject *args) {
+  patricia_c *patricia;
+  char *str;
+
+  if (!PyArg_ParseTuple(args, "ls", &patricia, &str)) {
+    return NULL;
+  }
+
+  patricia_node_t *node = NULL;
+  uint32_t ret = patricia->search_ext(patricia, str, strlen(str), &node);
+
+  if (node == NULL) {
+    return Py_BuildValue(
+      "{slsbsl}",
+      "found", ret,
+      "terminal", 0,
+      "edges", 0
+    );
+  }
+
+  return Py_BuildValue(
+    "{slsbsl}",
+    "found", ret,
+    "terminal", node->is_terminal,
+    "edges", node->edge_count
+  );
+}
+
+static PyObject *save_patricia(PyObject *self, PyObject *args) {
+  patricia_c *patricia;
+  const char *fullpath;
+
+  if (!PyArg_ParseTuple(args, "ls", &patricia, &fullpath)) {
+    return NULL;
+  }
+
+  patricia->save(patricia, fullpath);
+
+  Py_RETURN_NONE;
+}
+
+static PyObject *print_patricia(PyObject *self, PyObject *args) {
+  patricia_c *patricia;
+
+  if (!PyArg_ParseTuple(args, "l", &patricia)) {
+    return NULL;
+  }
+
+  patricia->print(patricia);
+
+  Py_RETURN_NONE;
+}
+
 
 static PyMethodDef nativeextractor_methods[] = {
   {
@@ -389,6 +519,62 @@ static PyMethodDef nativeextractor_methods[] = {
     METH_VARARGS,
     "unset_flags( extractor, flags ): Unsets flags for extractor. Returns new flags."
   },
+  /********************************* PATRICIA *********************************/
+  {
+    "create_patricia",
+    create_patricia,
+    METH_VARARGS,
+    "create_patricia( stream ): Creates a patricia."
+  },
+  {
+    "create_patricia_from_file",
+    create_patricia_from_file,
+    METH_VARARGS,
+    "create_patricia_from_file( fullpath ): Creates an mmapped patricia."
+  },
+  {
+    "create_patricia_from_stream",
+    create_patricia_from_stream,
+    METH_VARARGS,
+    "create_patricia_from_stream( stream ): Creates a patricia from stream."
+  },
+  {
+    "free_patricia",
+    free_patricia,
+    METH_VARARGS,
+    "free_patricia( pointer ): Frees patricia at address."
+  },
+  {
+    "insert_patricia",
+    insert_patricia,
+    METH_VARARGS,
+    "free_patricia( pointer, value ): Inserts value into patricia."
+  },
+  {
+    "search_patricia",
+    search_patricia,
+    METH_VARARGS,
+    "search_patricia( pointer, value ): Searches for value in patricia."
+  },
+  {
+    "search_ext_patricia",
+    search_ext_patricia,
+    METH_VARARGS,
+    "search_ext_patricia( pointer, value ): Searches for value in patricia, returns extended info."
+  },
+  {
+    "save_patricia",
+    save_patricia,
+    METH_VARARGS,
+    "save_patricia( pointer, fullpath ): Saves patricia into file."
+  },
+  {
+    "print_patricia",
+    print_patricia,
+    METH_VARARGS,
+    "print_patricia( pointer ): Prints patricia in ASCII to stdout."
+  },
+
   {
     NULL
   }
